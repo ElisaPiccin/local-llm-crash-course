@@ -9,6 +9,11 @@ https://docs.github.com/en/billing/managing-billing-for-github-codespaces/about-
 ### Hugging Face
 * The Orca Model's Model Card: https://huggingface.co/zoltanctoth/orca_mini_3B-GGUF
 
+### Codespace cleanup
+```
+ls ~/.cache/huggingface/hub/
+```
+
 ###  Installing `ctransformers` and Chainlit
 Just for reference. Remember, you don't need to do this as it's pre-installed in your Codespace.
 ```
