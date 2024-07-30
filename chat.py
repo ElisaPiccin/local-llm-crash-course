@@ -1,4 +1,5 @@
 from ctransformers import AutoModelForCausalLM
+from typing import List
 
 llm = AutoModelForCausalLM.from_pretrained("zoltanctoth/orca_mini_3B-GGUF", model_file="orca-mini-3b.q4_0.gguf")
 
@@ -21,16 +22,32 @@ prompt = "The name of capital of India is"
 # prompt = f"### System:\n{system}\n\n### User:\n{instruction}\n\n### Response:\n"
 
 
-def get_prompt(instruction: str) -> str:
+def get_prompt(instruction: str, history: List[str] = None) -> str:
     # system = "You are an AI assistant that follows instruction extremely well. Help as much as you can. Give short answers."
     system = "You are an AI assistant that gives helpful answers. You answer the question in a short and concise way."
-    prompt = f"### System:\n{system}\n\n### User:\n{instruction}\n\n### Response:\n"
+    prompt = f"### System:\n{system}\n\n### User:\n"
+    if history is not None:
+        prompt += f"This is the conversation history: {''. join(history)}. Now answer the question:"
+    prompt += f"{instruction}\n\n### Response:\n"
     print(prompt)
     return prompt
 
 
 question = "Which city is the capital of India?"
 
-for i in llm(get_prompt(question), stream=True):
-    print(i, end="", flush=True)
+history = []
+
+answer = ""
+for word in llm(get_prompt(question), stream=True):
+    print(word, end="", flush=True)
+    answer += word
+print()
+
+history.append(answer)
+
+
+question = "And what about the United States?"
+
+for word in llm(get_prompt(question, history=history), stream=True):
+    print(word, end="", flush=True)
 print()
