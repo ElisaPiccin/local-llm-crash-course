@@ -37,6 +37,7 @@ question = "Which city is the capital of India?"
 
 history = []
 
+history.append(question)
 answer = ""
 for word in llm(get_prompt(question), stream=True):
     print(word, end="", flush=True)
@@ -46,7 +47,7 @@ print()
 history.append(answer)
 
 
-question = "And what about the United States?"
+question = "And which is of the United States?"
 
 for word in llm(get_prompt(question, history=history), stream=True):
     print(word, end="", flush=True)
